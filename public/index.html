@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+    <title>Imageboard</title>
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+        <div id="main">
+            <div class="header">
+                <img src="/logo.png" alt="">
+                <h1>My Travel Wanderl[u]ist</h1>
+            </div>
+            <div class="inputfield">
+                <h2>Add a new destination:</h2>
+                <form>
+                    <input v-model="formStuff.title" type="text" name="title" placeholder="Title">
+                    <input v-model="formStuff.description" type="text" name="description" placeholder="Description">
+                    <input v-model="formStuff.username"  type="text" name="username" placeholder="Username">
+                    <input v-on:change="handleChange" type="file">
+                    <button v-on:click="handleSubmit">Upload</button>
+
+                </form>
+            </div>
+            <h2 class="latest-uploads">Latest uploads:</h2>
+            <div class="container">
+
+                    <div class="item" v-for="image in images">
+                        <a v-bind:href='"#" + image.id'><img v-bind:src="image.image" v-on:change="showModal"></a>
+                        <div class="item-text">
+                            <h3>{{image.title}}</h3>
+                            <p> {{image.description}}</p>
+                        </div>
+                    </div>
+                    <magnified-image v-if="selectedImage"
+                        v-bind:id="selectedImage"
+                        v-on:closing="closeModal"
+                        >
+                    </magnified-image>
+            </div>
+            <button class="more-button"
+                v-on:click="getMoreImages"
+                v-if="lastImageId>1"
+                >More</button>
+
+
+       </div>
+
+       <script id="show-image" type="x-template">
+        <div class="single-image">
+            <button id="close"v-on:click="close">x</button>
+           <img v-bind:src="image">
+            <h2>{{title}}</h2>
+            <h4>{{description}}</h4>
+            <em><p>Uploded by {{username}}</p></em>
+            <div class="comment">
+                <h2>Add a Comment!</h2>
+                <input v-model="comment" type="text" name="comment" placeholder="Comment">
+                <input v-model="commentUsername" type="text" name="username" placeholder="Username">
+                <button type="button" v-on:click="submitComment">Submit</button>
+                <div class="comment-box" v-for="comment in comments">
+                    <p>{{comment.comment}}</p>
+                    <em><p>{{comment.username}}</p></em>
+                </div>
+            </div>
+
+        </div>
+
+    </script>
+
+
+
+
+
+    <script src="/js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+<!-- <img v-bind:src="image.image" v-on:click="showModal(image.id)"> -->
